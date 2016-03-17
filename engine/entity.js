@@ -1,9 +1,18 @@
+import _ from 'lodash'
 var lastId = 0;
+
+const getComponentName = (component) => {
+  var name = component;
+  if (typeof component.getName === 'function') {
+    name = component.getName();
+  }
+  return name;
+}
 
 export default class Entity {
   constructor(data = {}) {
     this.id = lastId++;
-    Object.assign(this,data);
+    _.assign(this,_.cloneDeep(data));
   }
 
   clone() {
@@ -15,18 +24,6 @@ export default class Entity {
 
   getId() {
     return this.id;
-  }
-
-  flag(flagName) {
-    const res = this.clone();
-    res[flagName] = true;
-    return res;
-  }
-
-  deFlag(flagName) {
-    const res = this.clone();
-    delete res[flagName];
-    return res;
   }
 
   reattach(component) {
@@ -46,41 +43,24 @@ export default class Entity {
   }
 
   attachGroup(group) {
-    group.forEach((component) => {
-      this.attach(component);
-    });
+    return _.reduce(group.getSubComponents(), (entity, comp) => {
+      return entity.attach(comp);
+    }, this);
   }
 
   reattachGroup(group) {
-    group.forEach((component) => {
-      this.reattach(component);
-    });
+    return _.reduce(group.getSubComponents(), (entity, comp) => {
+      return entity.reattach(comp);
+    }, this);
   }
 
-  getComponentName (component) {
-    var name = component;
-    if (typeof component.getName === 'function') {
-      name = component.getName();
-    }
-    return name;
-  }
 
   attach(component) {
-    if (this.getComponentName(component)) return this.reattach(component);
+    if (typeof this[getComponentName(component)] === 'undefined') return this.reattach(component);
     else return this;
   }
 
-  detach(component) {
-    if (this.hasComponent(component)) {
-      delete this[component];
-    };
-  }
-
   hasComponent(component) {
-    return typeof this[this.getComponentName(component)] === 'object';
-  }
-
-  hasFlag(flagName) {
-    return this[flagName] === true;
+    return typeof this[getComponentName(component)] === 'object';
   }
 }

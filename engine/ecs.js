@@ -1,8 +1,6 @@
-import {createStore, combineReducers, compose, applyMiddleware} from 'redux'
-import thunk from 'redux-thunk';
+import {createStore, combineReducers, compose} from 'redux'
 import Manipulator from './entitiesManipulator.js'
 import _ from 'lodash'
-
 
 const SYSTEM_RUN = "ECS_ENGINE_SYSTEM_RUN";
 
@@ -11,8 +9,7 @@ export default class Engine {
     this.systems = {};
     this.keyboardMappings = {};
     this.store = createStore(this.getReducer(), 
-      compose( applyMiddleware(thunk),
-      window.devToolsExtension ? window.devToolsExtension() : f => f)
+      window.devToolsExtension ? window.devToolsExtension() : f => f
     );
     document.onkeydown = ({keyCode}) => {
       console.log(keyCode, 'down');
