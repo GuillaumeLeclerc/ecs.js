@@ -17,7 +17,6 @@ test('Entities', (t) => {
   t.test('Creating Entites', (t) => {
     const t1 = new Entity();
     const t2 = new Entity();
-    t.equal(t1.getId(), 0, 'the first Entity has id #1');
     t.ok(t1.getId() !== t2.getId(), 'no two entities has the same id');
     t.end();
   })

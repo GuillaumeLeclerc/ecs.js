@@ -12,15 +12,16 @@ const convertEntity = (manipulator, e) => {
         return e.id;
       }
       if (component === 'toJS' || component === 'toJSON' || typeof component === 'symbol') {
+        console.log('adfasdfasdf');
         return e[component];
       }
       if (component === 'remove') {
         return function () {
-          _.remove(manipulator.source, {id: e.id});
+          manipulator.scheduleRemoval(e.id);
         }
       }
 
-      if (!e.hasComponent(component) || _.has(removed, component)) {
+      if (!e.hasComponent(component) || removed.indexOf(component) !== -1) {
         throw "no component";
       }
       if (typeof working[component] === 'undefined') {
@@ -51,7 +52,8 @@ const convertEntity = (manipulator, e) => {
         const res = e.clone();
         Object.assign(res, working);
         _.each(removed, (r) => {
-          res.detach(r);
+          console.log('asdfasdf', r);
+          delete res[r];
         });
         return res;
       }
@@ -64,10 +66,22 @@ const convertEntity = (manipulator, e) => {
 export default class Manipulator {
   constructor(entities) {
     this.source = _.map(entities, convertEntity.bind(null, this));
+    this.removing = [];
+  }
+
+  scheduleRemoval(id) {
+    this.removing.push(id);
+  }
+
+  applyRemovals() {
+    _.remove(this.source, (e) => {
+      return this.removing.indexOf(e.id) != -1;
+    });
+    this.removing = [];
   }
 
   get () {
-    const res = _.map(_.concat(this.source, []), (e) => e());
+    const res = _.map(this.source, (e) => e());
     return res;
   }
 
@@ -77,21 +91,26 @@ export default class Manipulator {
   }
 
   map (f) {
-    return _.reject(_.map(this.source, (e) => {
+    const res =  _.reject(_.map(this.source, (e) => {
       try {
         return f(e);
       } catch (e) {
         return superRandomValue;
       }
-    }), superRandomValue);
+    }), (v) => {
+      return v === superRandomValue;
+    });
+    this.applyRemovals();
+    return res;
   }
 
   forEach (f) {
      _.each(this.source, (e) => {
       try {
-        f.bind(e,e)();
+        f(e);
       } catch (e) { }
     });
+    this.applyRemovals();
     return this;
   }
 
@@ -103,5 +122,9 @@ export default class Manipulator {
           } catch (e) { }
        });
     });
+  }
+
+  size() {
+    return this.source.length;
   }
 }
