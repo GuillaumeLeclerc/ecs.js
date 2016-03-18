@@ -7,28 +7,7 @@ const SYSTEM_RUN = "ECS_ENGINE_SYSTEM_RUN";
 export default class Engine {
   constructor() {
     this.systems = {};
-    this.keyboardMappings = {};
-    this.store = createStore(this.getReducer(), 
-      window.devToolsExtension ? window.devToolsExtension() : f => f
-    );
-    document.onkeydown = ({keyCode}) => {
-      console.log(keyCode, 'down');
-      const mapping = this.keyboardMappings[keyCode];
-      if (mapping) {
-        const {system, once} = mapping;
-        system.runNow();
-        if (!once) {
-          system.start();
-        }
-      }
-    }
-    document.onkeyup = ({keyCode}) => {
-      console.log(keyCode, 'up');
-      const mapping = this.keyboardMappings[keyCode];
-      if (mapping) {
-        mapping.system.stop();
-      }
-    }
+    this.store = createStore(this.getReducer());
   }
 
   registerSystem(system) {
@@ -57,9 +36,8 @@ export default class Engine {
           const manipulator = new Manipulator(entities);
           try {
             const newState = _.cloneDeep(state);
-            const res = system.run(manipulator, state);
-            if (res) return res.get();
-            else return {entities:manipulator.get(), state: newState};
+            system.run(manipulator, state);
+            return {entities:manipulator.get(), state: newState};
           } catch (e) {
             console.error("Error in System " + system.getId());
             console.error(e.message);
@@ -68,13 +46,6 @@ export default class Engine {
         }
       }
       return {entities, state};
-    }
-  }
-
-  mapKey(code, system, once=false) {
-    this.keyboardMappings[code] = {
-      system,
-      once
     }
   }
 };
