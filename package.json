@@ -1,15 +1,15 @@
 {
-  "name": "jsecs",
+  "name": "jsecs-core",
   "version": "0.0.1",
   "description": "A game engine using the ECS pattern and Redux framework",
-  "main": "index.js",
+  "main": "./engine/main.js",
   "scripts": {
     "test": "./node_modules/tape/bin/tape  -r babel-register test/test.js",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/GuillaumeLeclerc/ecs.js.git"
+    "url": "git+https://github.com/jsecs/jsecs-core.git"
   },
   "keywords": [
     "ECS",
@@ -19,9 +19,9 @@
   "author": "Guillaume Leclerc",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/GuillaumeLeclerc/ecs.js/issues"
+    "url": "https://github.com/jsecs/jsecs-core/issues"
   },
-  "homepage": "https://github.com/GuillaumeLeclerc/ecs.js#readme",
+  "homepage": "https://github.com/jsecs/jsecs-core",
   "devDependencies": {
     "babel-core": "^6.1.2",
     "babel-loader": "^6.1.0",

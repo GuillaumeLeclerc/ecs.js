@@ -27,8 +27,8 @@ var baseConfig = {
  * */
 var webConfig = _.clone(baseConfig);
 webConfig.output = {
-	path: './dist',
-    filename: "jsecs.js",
+	path: __dirname,
+    filename: "index.js",
     library: ["JSECS"],
     libraryTarget: "umd"
 };
