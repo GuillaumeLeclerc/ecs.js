@@ -47,10 +47,12 @@
     "karma-spec-reporter": "0.0.24",
     "karma-tap": "^1.0.4",
     "karma-webpack": "^1.7.0",
-    "lodash": "^4.6.1",
     "phantomjs-prebuilt": "^2.1.5",
-    "redux": "^3.3.1",
     "tape": "^4.5.1",
     "webpack": "^1.12.14"
+  },
+  "dependencies": {
+    "lodash": "^4.6.1",
+    "redux": "^3.3.1"
   }
 }
