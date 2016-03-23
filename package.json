@@ -2,7 +2,7 @@
   "name": "jsecs-core",
   "version": "0.0.1",
   "description": "A game engine using the ECS pattern and Redux framework",
-  "main": "./engine/main.js",
+  "main": "./dist/main.js",
   "scripts": {
     "test": "./node_modules/tape/bin/tape  -r babel-register test/test.js",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
@@ -32,6 +32,8 @@
     "babel-runtime": "^5.8.0",
     "covert": "^1.1.0",
     "cross-env": "^1.0.5",
+    "grunt": "^0.4.5",
+    "grunt-babel": "^6.0.0",
     "isparta": "^4.0.0",
     "isparta-loader": "^2.0.0",
     "istanbul-instrumenter-loader": "^0.2.0",
@@ -47,6 +49,7 @@
     "karma-spec-reporter": "0.0.24",
     "karma-tap": "^1.0.4",
     "karma-webpack": "^1.7.0",
+    "load-grunt-tasks": "^3.4.1",
     "lodash": "^4.6.1",
     "phantomjs-prebuilt": "^2.1.5",
     "redux": "^3.3.1",
