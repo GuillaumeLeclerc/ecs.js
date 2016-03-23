@@ -1,6 +1,6 @@
 {
   "name": "jsecs-core",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A game engine using the ECS pattern and Redux framework",
   "main": "./engine/main.js",
   "scripts": {
